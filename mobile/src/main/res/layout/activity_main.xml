@@ -19,62 +19,16 @@
         android:layout_height="wrap_content"
         android:hint="@string/port_activity_main"
         android:inputType="text" />
-    <Button
-        android:id="@+id/change_socket_activity_main"
+    <Button android:id="@+id/change_socket_activity_main"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="@string/change_socket_activity_main"/>
 
-    <Button
-        android:id="@+id/sleep_activity_main"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="@string/sleep_activity_main"/>
-    <Button
-        android:id="@+id/watch_tv_activity_main"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="@string/watch_tv_activity_main"/>
-    <Button
-        android:id="@+id/read_activity_main"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="@string/read_activity_main"/>
-    <Button
-        android:id="@+id/sweep_activity_main"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="@string/sweep_activity_main"/>
-    <Button
-        android:id="@+id/wash_dishes_activity_main"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="@string/wash_dishes_activity_main"/>
-    <Button
-        android:id="@+id/circuit_activity_main"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="@string/circuit_activity_main"/>
-    <Button
-        android:id="@+id/walk_activity_main"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="@string/walk_activity_main"/>
-    <Button
-        android:id="@+id/meal_activity_main"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="@string/meal_activity_main"/>
-    <Button
-        android:id="@+id/play_pad_activity_main"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="@string/play_pad_activity_main"/>
-    <Button
-        android:id="@+id/other_activity_main"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="@string/other_activity_main"/>
+    <LinearLayout android:id="@+id/label_list_activity_main"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></LinearLayout>
+
 
 
     <TextView android:id="@+id/acceleration_activity_main" android:layout_width="wrap_content"

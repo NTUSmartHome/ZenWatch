@@ -27,12 +27,14 @@ import com.google.android.gms.wearable.Wearable;
 
 public class MainActivity extends Activity implements ConnectionCallbacks,
         OnConnectionFailedListener{
+    private final float alpha = 0.8f;
     private final String SENSOR_SENSOR_KEY = "SENSOR";
     private final double DURATION_SEND = 1000;
     private final int DURATION_SENSOR = 40000;
     private SensorManager mSensorManager;
     private Sensor mAccelerometerSensor;
     private Sensor mMagneticFieldSensor;
+    private Sensor mLinearAccelerometerSensor;
     private TextView mTextIsConnect;
     private TextView mTextAcc, mTextMF, mTextZ;
     private Button mButtonShowData;
@@ -51,6 +53,7 @@ public class MainActivity extends Activity implements ConnectionCallbacks,
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mAccelerometerSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mMagneticFieldSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+        mLinearAccelerometerSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
         sensorDataStream = new String[9];
         for(int i = 0; i < sensorDataStream.length; i++){
             sensorDataStream[i] = " ";
@@ -136,10 +139,13 @@ public class MainActivity extends Activity implements ConnectionCallbacks,
                 mTextMF.setText("X: " + String.format("%.4f", event.values[0]) + " Y: " + String.format("%.4f", event.values[1]) + " Z: " + String.format("%.4f", event.values[2]));
                 magneticFieldValues = event.values;
 
+
+
+                //sendSensorData(event, SENSOR_GYROSCOPE_KEY);
+            }else if(sensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION){
                 sensorDataStream[3] += event.values[0] + ",";
                 sensorDataStream[4] += event.values[1] + ",";
                 sensorDataStream[5] += event.values[2] + ",";
-                //sendSensorData(event, SENSOR_GYROSCOPE_KEY);
             }
             SensorManager.getRotationMatrix(RotationMatrix, null, accelerometerValues, magneticFieldValues);
             SensorManager.getOrientation(RotationMatrix, values);
@@ -207,6 +213,7 @@ public class MainActivity extends Activity implements ConnectionCallbacks,
 
                 mSensorManager.registerListener(accelerometerListener, mAccelerometerSensor, DURATION_SENSOR);
                 mSensorManager.registerListener(accelerometerListener, mMagneticFieldSensor, DURATION_SENSOR);
+                mSensorManager.registerListener(accelerometerListener, mLinearAccelerometerSensor, DURATION_SENSOR);
 
             }
         }).start();

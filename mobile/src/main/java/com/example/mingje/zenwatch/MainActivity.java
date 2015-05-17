@@ -1,10 +1,12 @@
 package com.example.mingje.zenwatch;
 
+import android.app.Fragment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,6 +24,8 @@ import com.google.android.gms.wearable.DataMap;
 import com.google.android.gms.wearable.DataMapItem;
 import com.google.android.gms.wearable.Wearable;
 
+import org.w3c.dom.Text;
+
 import java.io.BufferedOutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -30,7 +34,8 @@ import java.util.Arrays;
 
 public class MainActivity extends ActionBarActivity implements  DataApi.DataListener,
         GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener {
+        GoogleApiClient.OnConnectionFailedListener,
+        LabelListFragment.OnSetCurrentLabelListener {
 
     private final String SENSOR_SENSOR_KEY = "SENSOR";
 
@@ -42,13 +47,16 @@ public class MainActivity extends ActionBarActivity implements  DataApi.DataList
     private Handler mHandler;
     private String address = "192.168.4.136";// 連線的ip
     private int port = 8765;// 連線的port
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         findViews();
         setListener();
-
+        Display display = getWindowManager().getDefaultDisplay();
+        LabelListFragment labelListFragment = new LabelListFragment();
+        getFragmentManager().beginTransaction().replace(R.id.label_list_activity_main, labelListFragment).commit();
         mHandler = new Handler() {
 
             public void handleMessage(Message msg) {
@@ -84,6 +92,7 @@ public class MainActivity extends ActionBarActivity implements  DataApi.DataList
         mEditTextIP = (EditText) findViewById(R.id.ip_activity_main);
         mEditTextPort = (EditText) findViewById(R.id.port_activity_main);
         mButtonChangeIPnPort = (Button) findViewById(R.id.change_socket_activity_main);
+
     }
 
     @Override
@@ -144,6 +153,8 @@ public class MainActivity extends ActionBarActivity implements  DataApi.DataList
             }
         }
     }
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -198,4 +209,11 @@ public class MainActivity extends ActionBarActivity implements  DataApi.DataList
     }
 
 
+    @Override
+    public void onSetCurrentLabel(String currentLabel) {
+        String[] data = new String[1];
+        data[0] = "";
+        data[0] += currentLabel;
+        socketClient(data);
+    }
 }
