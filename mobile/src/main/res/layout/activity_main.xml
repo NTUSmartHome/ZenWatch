@@ -1,0 +1,88 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity">
+
+
+    <EditText
+        android:id="@+id/ip_activity_main"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/ip_activity_main"
+        android:inputType="text" />
+    <EditText
+        android:id="@+id/port_activity_main"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/port_activity_main"
+        android:inputType="text" />
+    <Button
+        android:id="@+id/change_socket_activity_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/change_socket_activity_main"/>
+
+    <Button
+        android:id="@+id/sleep_activity_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/sleep_activity_main"/>
+    <Button
+        android:id="@+id/watch_tv_activity_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/watch_tv_activity_main"/>
+    <Button
+        android:id="@+id/read_activity_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/read_activity_main"/>
+    <Button
+        android:id="@+id/sweep_activity_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/sweep_activity_main"/>
+    <Button
+        android:id="@+id/wash_dishes_activity_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/wash_dishes_activity_main"/>
+    <Button
+        android:id="@+id/circuit_activity_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/circuit_activity_main"/>
+    <Button
+        android:id="@+id/walk_activity_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/walk_activity_main"/>
+    <Button
+        android:id="@+id/meal_activity_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/meal_activity_main"/>
+    <Button
+        android:id="@+id/play_pad_activity_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/play_pad_activity_main"/>
+    <Button
+        android:id="@+id/other_activity_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/other_activity_main"/>
+
+
+    <TextView android:id="@+id/acceleration_activity_main" android:layout_width="wrap_content"
+        android:layout_height="wrap_content" android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true" android:text="Not yet" />
+    <TextView android:id="@+id/isconnect_activity_main" android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Not connectt"
+        android:layout_centerHorizontal="true" />
+
+</LinearLayout>

@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">ZenWatch</string>
+    <string name="hello_round">Hello Round World!</string>
+    <string name="hello_square">Hello Square World!</string>
+    <string name="accerleration_x_activity_main">x</string>
+    <string name="accerleration_y_activity_main">y</string>
+    <string name="accerleration_z_activity_main">z</string>
+</resources>
