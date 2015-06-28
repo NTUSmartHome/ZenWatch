@@ -18,11 +18,12 @@ public class LabelListFragment extends ListFragment{
             "Circuit", "Walk", "Meal", "PlayPad", "Other", "Reset", "Set"};
     OnSetCurrentLabelListener mSetCurrentLabelCallback;
     private boolean setFlag = false;
+    private ArrayAdapter<String> arrayAdapter;
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-
-        setListAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1,
-                labelList));
+        arrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1,
+                labelList);
+        setListAdapter(arrayAdapter);
     }
 
     public interface OnSetCurrentLabelListener{
@@ -51,6 +52,7 @@ public class LabelListFragment extends ListFragment{
                 break;
             case 11:
                 labelList[0] = "Label:Other";
+                mSetCurrentLabelCallback.onSetCurrentLabel(labelList[0]);
                 setFlag = false;
                 break;
             case 12:
@@ -66,6 +68,7 @@ public class LabelListFragment extends ListFragment{
                     labelList[0] = "Label:" + labelList[position];
                 }else
                     labelList[0] += " " + labelList[position];
+                arrayAdapter.notifyDataSetChanged();
                 break;
         }
     }

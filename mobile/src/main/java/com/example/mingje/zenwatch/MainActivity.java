@@ -1,8 +1,11 @@
 package com.example.mingje.zenwatch;
 
 import android.app.Fragment;
+import android.app.ListFragment;
+import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.FragmentTabHost;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -38,15 +42,18 @@ public class MainActivity extends ActionBarActivity implements  DataApi.DataList
         LabelListFragment.OnSetCurrentLabelListener {
 
     private final String SENSOR_SENSOR_KEY = "SENSOR";
-
+    private String currentLabel = "";
+    private Context MainActivity;
     private TextView mTextAcceleration;
     private EditText mEditTextIP;
     private EditText mEditTextPort;
     private Button mButtonChangeIPnPort;
+    private Button mButtonStartTransmission;
+    private Button mButtonStopTransmission;
     private GoogleApiClient mGoogleApiClient;
     private Handler mHandler;
-    private String address = "192.168.4.136";// 連線的ip
-    private int port = 8765;// 連線的port
+    private String address = "140.112.4.153";// 連線的ip
+    private int port = 55123;// 連線的port
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,9 +61,11 @@ public class MainActivity extends ActionBarActivity implements  DataApi.DataList
         setContentView(R.layout.activity_main);
         findViews();
         setListener();
+
         Display display = getWindowManager().getDefaultDisplay();
         LabelListFragment labelListFragment = new LabelListFragment();
         getFragmentManager().beginTransaction().replace(R.id.label_list_activity_main, labelListFragment).commit();
+
         mHandler = new Handler() {
 
             public void handleMessage(Message msg) {
@@ -82,9 +91,29 @@ public class MainActivity extends ActionBarActivity implements  DataApi.DataList
             public void onClick(View view) {
                 address = mEditTextIP.getText().toString();
                 port = Integer.valueOf(mEditTextPort.getText().toString());
+                //Toast.makeText(MainActivity, "Change Success", Toast.LENGTH_SHORT);
             }
         };
         mButtonChangeIPnPort.setOnClickListener(changeIPnPort);
+
+        View.OnClickListener startOrStopTransmissionListener = new View.OnClickListener(){
+
+            public void onClick(View view){
+                switch (view.getId()){
+                    case R.id.start_transmission_activity_main:
+                        mGoogleApiClient.connect();
+                        //Toast.makeText(MainActivity, "Start transmisson", Toast.LENGTH_SHORT);
+                        break;
+                    case R.id.stop_transmission_activity_main:
+                        Wearable.DataApi.removeListener(mGoogleApiClient, MainActivity.this);
+                        //Toast.makeText(MainActivity, "Stop transmisson", Toast.LENGTH_SHORT);
+                        mGoogleApiClient.disconnect();
+                        break;
+                }
+            }
+        };
+        mButtonStopTransmission.setOnClickListener(startOrStopTransmissionListener);
+        mButtonStartTransmission.setOnClickListener(startOrStopTransmissionListener);
     }
 
     public void findViews(){
@@ -92,6 +121,8 @@ public class MainActivity extends ActionBarActivity implements  DataApi.DataList
         mEditTextIP = (EditText) findViewById(R.id.ip_activity_main);
         mEditTextPort = (EditText) findViewById(R.id.port_activity_main);
         mButtonChangeIPnPort = (Button) findViewById(R.id.change_socket_activity_main);
+        mButtonStartTransmission = (Button) findViewById(R.id.start_transmission_activity_main);
+        mButtonStopTransmission = (Button) findViewById(R.id.stop_transmission_activity_main);
 
     }
 
@@ -110,7 +141,7 @@ public class MainActivity extends ActionBarActivity implements  DataApi.DataList
     @Override
     protected void onPause() {
         super.onPause();
-       // Wearable.DataApi.removeListener(mGoogleApiClient, this);
+        //Wearable.DataApi.removeListener(mGoogleApiClient, this);
         //mGoogleApiClient.disconnect();
     }
 
@@ -182,6 +213,8 @@ public class MainActivity extends ActionBarActivity implements  DataApi.DataList
                     BufferedOutputStream out = new BufferedOutputStream(client
                             .getOutputStream());
                     // 送出字串
+                    out.write((currentLabel + "\r\n").getBytes());
+                    out.flush();
                     out.write(fData.getBytes());
                     out.flush();
                     out.close();
@@ -211,9 +244,8 @@ public class MainActivity extends ActionBarActivity implements  DataApi.DataList
 
     @Override
     public void onSetCurrentLabel(String currentLabel) {
-        String[] data = new String[1];
-        data[0] = "";
-        data[0] += currentLabel;
-        socketClient(data);
+
+        this.currentLabel = currentLabel;
+        //socketClient(data);
     }
 }

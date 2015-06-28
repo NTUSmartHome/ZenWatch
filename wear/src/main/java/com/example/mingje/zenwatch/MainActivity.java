@@ -124,7 +124,7 @@ public class MainActivity extends Activity implements ConnectionCallbacks,
             if(sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
 
 
-                mTextAcc.setText(" X: " + String.format("%.4f", event.values[0]) + " Y: " + String.format("%.4f", event.values[1]) + " Z: " + String.format("%.4f", event.values[2]));
+                //mTextAcc.setText(" X: " + String.format("%.4f", event.values[0]) + " Y: " + String.format("%.4f", event.values[1]) + " Z: " + String.format("%.4f", event.values[2]));
                 accelerometerValues = event.values;
 
                 sensorDataStream[0] += event.values[0] + ",";
@@ -136,7 +136,7 @@ public class MainActivity extends Activity implements ConnectionCallbacks,
                 //sendSensorData(event, SENSOR_ACCELERATION_KEY);
 
             }else if(sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD){
-                mTextMF.setText("X: " + String.format("%.4f", event.values[0]) + " Y: " + String.format("%.4f", event.values[1]) + " Z: " + String.format("%.4f", event.values[2]));
+                //mTextMF.setText("X: " + String.format("%.4f", event.values[0]) + " Y: " + String.format("%.4f", event.values[1]) + " Z: " + String.format("%.4f", event.values[2]));
                 magneticFieldValues = event.values;
 
 
@@ -156,12 +156,13 @@ public class MainActivity extends Activity implements ConnectionCallbacks,
             sensorDataStream[6] += values[0] + ",";
             sensorDataStream[7] += values[1] + ",";
             sensorDataStream[8] += values[2] + ",";
-            mTextZ.setText(values[0] + " " + values[1] + " " + values[2] + "");
+
+            //mTextZ.setText(values[0] + " " + values[1] + " " + values[2] + "");
 
             if(System.currentTimeMillis() - previousTime > DURATION_SEND){
                 previousTime = System.currentTimeMillis();
 
-                for(int i = 0; i < sensorDataStream.length - 1; i++) {
+                for(int i = 0; i < sensorDataStream.length - 1; i++) {             //bug,last data end should be;
                     sensorDataStream[i] = sensorDataStream[i].substring(0, sensorDataStream[i].length() - 1);
                     sensorDataStream[i] += ";";
                 }
