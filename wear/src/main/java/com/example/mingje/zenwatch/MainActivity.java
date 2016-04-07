@@ -30,7 +30,7 @@ public class MainActivity extends Activity implements ConnectionCallbacks,
     private final float alpha = 0.8f;
     private final String SENSOR_SENSOR_KEY = "SENSOR";
     private final double DURATION_SEND = 1000;
-    private final int DURATION_SENSOR = 40000;
+    private final int DURATION_SENSOR = 80000;
     private SensorManager mSensorManager;
     private Sensor mAccelerometerSensor;
     private Sensor mMagneticFieldSensor;
@@ -46,6 +46,7 @@ public class MainActivity extends Activity implements ConnectionCallbacks,
     private float[] RotationMatrix = new float[9];
     private long previousTime;
     private boolean dataVisble = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,8 +110,7 @@ public class MainActivity extends Activity implements ConnectionCallbacks,
                 .build();
     }
 
-
-    private SensorEventListener accelerometerListener = new SensorEventListener(){
+    private SensorEventListener sensorListener = new SensorEventListener(){
         @Override
         public void onAccuracyChanged(Sensor arg0, int arg1) {
             // TODO Auto-generated method stub
@@ -120,44 +120,25 @@ public class MainActivity extends Activity implements ConnectionCallbacks,
         @Override
         public void onSensorChanged(SensorEvent event) {
             // TODO Auto-generated method stub
+            thesisData(event);
+
+        }
+        public void footAcc(SensorEvent event){
             Sensor sensor = event.sensor;
-            if(sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+            if(sensor.getType() == Sensor.TYPE_ACCELEROMETER){
 
-
-                //mTextAcc.setText(" X: " + String.format("%.4f", event.values[0]) + " Y: " + String.format("%.4f", event.values[1]) + " Z: " + String.format("%.4f", event.values[2]));
-                accelerometerValues = event.values;
-
-                sensorDataStream[0] += event.values[0] + ",";
-                sensorDataStream[1] += event.values[1] + ",";
-                sensorDataStream[2] += event.values[2] + ",";
-
-
-
-                //sendSensorData(event, SENSOR_ACCELERATION_KEY);
-
-            }else if(sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD){
-                //mTextMF.setText("X: " + String.format("%.4f", event.values[0]) + " Y: " + String.format("%.4f", event.values[1]) + " Z: " + String.format("%.4f", event.values[2]));
-                magneticFieldValues = event.values;
-
-
-
-                //sendSensorData(event, SENSOR_GYROSCOPE_KEY);
-            }else if(sensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION){
-                sensorDataStream[3] += event.values[0] + ",";
-                sensorDataStream[4] += event.values[1] + ",";
-                sensorDataStream[5] += event.values[2] + ",";
+                String acc = event.values[0] + " " + event.values[1] + " " + event.values[2];
+                String[] accArray = new String[1];
+                accArray[0] = acc;
+                sendAccelerationData(accArray);
+                mTextZ.setText(acc);
+                Log.d("SensorCHAnge", "dasd");
             }
-            SensorManager.getRotationMatrix(RotationMatrix, null, accelerometerValues, magneticFieldValues);
-            SensorManager.getOrientation(RotationMatrix, values);
-
-            values[0]=(float)Math.toDegrees(values[0]);
-            values[1]=(float)Math.toDegrees(values[1]);
-            values[2]=(float)Math.toDegrees(values[2]);
-            sensorDataStream[6] += values[0] + ",";
-            sensorDataStream[7] += values[1] + ",";
-            sensorDataStream[8] += values[2] + ",";
-
-            //mTextZ.setText(values[0] + " " + values[1] + " " + values[2] + "");
+        }
+        public void thesisData(SensorEvent event){
+            addAcceleration(event);
+            addOrientation(event);
+            addLinearAcceleration(event);
 
             if(System.currentTimeMillis() - previousTime > DURATION_SEND){
                 previousTime = System.currentTimeMillis();
@@ -180,8 +161,51 @@ public class MainActivity extends Activity implements ConnectionCallbacks,
                 sensorDataStream[8] = "\r\nR:";
             }
 
+        }
+        public void addAcceleration(SensorEvent event){
+            Sensor sensor = event.sensor;
+            if(sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+
+                
+                //mTextAcc.setText(" X: " + String.format("%.4f", event.values[0]) + " Y: " + String.format("%.4f", event.values[1]) + " Z: " + String.format("%.4f", event.values[2]));
+                accelerometerValues = event.values;
+
+                sensorDataStream[0] += event.values[0] + ",";
+                sensorDataStream[1] += event.values[1] + ",";
+                sensorDataStream[2] += event.values[2] + ",";
 
 
+
+                //sendSensorData(event, SENSOR_ACCELERATION_KEY);
+
+            }
+        }
+        
+        public void addOrientation(SensorEvent event){
+            Sensor sensor = event.sensor;
+            if(sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD){
+                //mTextMF.setText("X: " + String.format("%.4f", event.values[0]) + " Y: " + String.format("%.4f", event.values[1]) + " Z: " + String.format("%.4f", event.values[2]));
+                magneticFieldValues = event.values;
+                SensorManager.getRotationMatrix(RotationMatrix, null, accelerometerValues, magneticFieldValues);
+                SensorManager.getOrientation(RotationMatrix, values);
+
+                values[0]=(float)Math.toDegrees(values[0]);
+                values[1]=(float)Math.toDegrees(values[1]);
+                values[2]=(float)Math.toDegrees(values[2]);
+    
+                sensorDataStream[6] += values[0] + ",";
+                sensorDataStream[7] += values[1] + ",";
+                sensorDataStream[8] += values[2] + ",";
+            }
+        }
+        
+        public void addLinearAcceleration(SensorEvent event){
+            Sensor sensor = event.sensor;
+            if(sensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION){
+                sensorDataStream[3] += event.values[0] + ",";
+                sensorDataStream[4] += event.values[1] + ",";
+                sensorDataStream[5] += event.values[2] + ",";
+            }
         }
     };
 
@@ -198,7 +222,7 @@ public class MainActivity extends Activity implements ConnectionCallbacks,
     @Override
     protected void onPause() {
         super.onPause();
-        mSensorManager.unregisterListener(accelerometerListener);
+        mSensorManager.unregisterListener(sensorListener);
     }
     @Override
     protected void onStop() {
@@ -212,9 +236,9 @@ public class MainActivity extends Activity implements ConnectionCallbacks,
         new Thread(new Runnable() {
             public void run() {
 
-                mSensorManager.registerListener(accelerometerListener, mAccelerometerSensor, DURATION_SENSOR);
-                mSensorManager.registerListener(accelerometerListener, mMagneticFieldSensor, DURATION_SENSOR);
-                mSensorManager.registerListener(accelerometerListener, mLinearAccelerometerSensor, DURATION_SENSOR);
+                mSensorManager.registerListener(sensorListener, mAccelerometerSensor, DURATION_SENSOR);
+                mSensorManager.registerListener(sensorListener, mMagneticFieldSensor, DURATION_SENSOR);
+                mSensorManager.registerListener(sensorListener, mLinearAccelerometerSensor, DURATION_SENSOR);
 
             }
         }).start();
@@ -229,8 +253,14 @@ public class MainActivity extends Activity implements ConnectionCallbacks,
         PutDataRequest request = dataMapRequest.asPutDataRequest();
         PendingResult<DataApi.DataItemResult> pendingResult = Wearable.DataApi
                   .putDataItem(mGoogleApiClient, request);
+    }
 
-
+    public void sendAccelerationData(String[] sensorDataStream){
+        PutDataMapRequest dataMapRequest = PutDataMapRequest.create("/Acceleration");
+        dataMapRequest.getDataMap().putStringArray(SENSOR_SENSOR_KEY, sensorDataStream);
+        PutDataRequest request = dataMapRequest.asPutDataRequest();
+        PendingResult<DataApi.DataItemResult> pendingResult = Wearable.DataApi
+                .putDataItem(mGoogleApiClient, request);
     }
 
     @Override

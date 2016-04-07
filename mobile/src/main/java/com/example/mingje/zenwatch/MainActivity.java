@@ -43,7 +43,6 @@ public class MainActivity extends ActionBarActivity implements  DataApi.DataList
 
     private final String SENSOR_SENSOR_KEY = "SENSOR";
     private String currentLabel = "";
-    private Context MainActivity;
     private TextView mTextAcceleration;
     private EditText mEditTextIP;
     private EditText mEditTextPort;
@@ -52,7 +51,7 @@ public class MainActivity extends ActionBarActivity implements  DataApi.DataList
     private Button mButtonStopTransmission;
     private GoogleApiClient mGoogleApiClient;
     private Handler mHandler;
-    private String address = "140.112.4.153";// 連線的ip
+    private String address = "140.112.90.180";// 連線的ip
     private int port = 55123;// 連線的port
 
     @Override
@@ -178,6 +177,17 @@ public class MainActivity extends ActionBarActivity implements  DataApi.DataList
                     // mTextAcceleration.setText((String)dataMap.get(SENSOR_TYPE_KEY));
                     Log.d("onDataChanged","ACCELERATION");
 
+                }else if(item.getUri().getPath().compareTo("/Acceleration") == 0){
+                    DataMap dataMap = DataMapItem.fromDataItem(item).getDataMap();
+                    //Message Test
+                    socketClient((String[])dataMap.get(SENSOR_SENSOR_KEY));
+                    Message msg = Message.obtain();
+                    msg.what = 0;
+                    msg.obj = dataMap.get(SENSOR_SENSOR_KEY);
+                    mHandler.sendMessage(msg);
+
+                    // mTextAcceleration.setText((String)dataMap.get(SENSOR_TYPE_KEY));
+                    Log.d("onDataChanged","ACCELERATION");
                 }
             } else if (event.getType() == DataEvent.TYPE_DELETED) {
                 // DataItem deletedaaaaa

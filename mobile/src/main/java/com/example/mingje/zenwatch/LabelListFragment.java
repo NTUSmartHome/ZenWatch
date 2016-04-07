@@ -15,7 +15,7 @@ import android.widget.Toast;
  */
 public class LabelListFragment extends ListFragment{
     String[] labelList = {"Label:Other", "Sleep", "WatchTV", "Read", "Sweep", "WashDishes",
-            "Circuit", "Walk", "Meal", "PlayPad", "Other", "Reset", "Set"};
+            "Exercise", "Walk", "Meal", "PlayPad","WearShoes", "WashDishes", "Other", "Reset", "Set"};
     OnSetCurrentLabelListener mSetCurrentLabelCallback;
     private boolean setFlag = false;
     private ArrayAdapter<String> arrayAdapter;
@@ -50,12 +50,12 @@ public class LabelListFragment extends ListFragment{
                 Toast.makeText(getActivity(), labelList[position],
                     Toast.LENGTH_SHORT).show();
                 break;
-            case 11:
+            case 13 :
                 labelList[0] = "Label:Other";
                 mSetCurrentLabelCallback.onSetCurrentLabel(labelList[0]);
                 setFlag = false;
                 break;
-            case 12:
+            case 14:
                 Toast.makeText(getActivity(), "Set Success",
                         Toast.LENGTH_SHORT).show();
                 mSetCurrentLabelCallback.onSetCurrentLabel(labelList[0]);
