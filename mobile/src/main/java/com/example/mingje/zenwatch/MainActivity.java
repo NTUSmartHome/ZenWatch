@@ -51,8 +51,8 @@ public class MainActivity extends ActionBarActivity implements  DataApi.DataList
     private Button mButtonStopTransmission;
     private GoogleApiClient mGoogleApiClient;
     private Handler mHandler;
-    private String address = "140.112.90.180";// 連線的ip
-    private int port = 55123;// 連線的port
+    private String address = "140.112.90.184";// 連線的ip
+    private int port = 54321;// 連線的port
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -224,7 +224,6 @@ public class MainActivity extends ActionBarActivity implements  DataApi.DataList
                             .getOutputStream());
                     // 送出字串
                     out.write((currentLabel + "\r\n").getBytes());
-                    out.flush();
                     out.write(fData.getBytes());
                     out.flush();
                     out.close();

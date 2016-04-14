@@ -13,44 +13,45 @@ import android.widget.Toast;
 /**
  * Created by g2525_000 on 2015/5/17.
  */
-public class LabelListFragment extends ListFragment{
+public class LabelListFragment extends ListFragment {
     String[] labelList = {"Label:Other", "Sleep", "WatchTV", "Read", "Sweep", "WashDishes",
-            "Exercise", "Walk", "Meal", "PlayPad","WearShoes", "WashDishes", "Other", "Reset", "Set"};
+            "Exercise", "Walk", "Meal", "PlayPad", "WearShoes", "WashDishes", "Other", "Reset", "Set"};
     OnSetCurrentLabelListener mSetCurrentLabelCallback;
     private boolean setFlag = false;
     private ArrayAdapter<String> arrayAdapter;
-    public void onCreate(Bundle savedInstanceState){
+
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         arrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1,
                 labelList);
         setListAdapter(arrayAdapter);
     }
 
-    public interface OnSetCurrentLabelListener{
+    public interface OnSetCurrentLabelListener {
         public void onSetCurrentLabel(String currentLabel);
     }
 
-    public void onAttach(Activity activity){
+    public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        try{
+        try {
             mSetCurrentLabelCallback = (OnSetCurrentLabelListener) activity;
-        }catch (ClassCastException e){
+        } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString() +
                     "must implement OnSetCurrentLabelListener");
         }
     }
 
-    public void onListItemClick(ListView parent, View v, int position, long id){
+    public void onListItemClick(ListView parent, View v, int position, long id) {
         /*Toast.makeText(getActivity(), "Test:" + labelList[position],
                 Toast.LENGTH_SHORT).show();*/
 
-        switch(position){
+        switch (position) {
             case 0:
                 Toast.makeText(getActivity(), labelList[position],
-                    Toast.LENGTH_SHORT).show();
+                        Toast.LENGTH_SHORT).show();
                 break;
-            case 13 :
+            case 13:
                 labelList[0] = "Label:Other";
                 mSetCurrentLabelCallback.onSetCurrentLabel(labelList[0]);
                 setFlag = false;
@@ -63,10 +64,10 @@ public class LabelListFragment extends ListFragment{
             default:
                 Toast.makeText(getActivity(), labelList[position],
                         Toast.LENGTH_SHORT).show();
-                if(!setFlag) {
+                if (!setFlag) {
                     setFlag = true;
                     labelList[0] = "Label:" + labelList[position];
-                }else
+                } else
                     labelList[0] += " " + labelList[position];
                 arrayAdapter.notifyDataSetChanged();
                 break;
@@ -74,9 +75,9 @@ public class LabelListFragment extends ListFragment{
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
-                             savedInstanceState){
+            savedInstanceState) {
         return inflater.inflate(R.layout.activity_main_label_list_fragment, container
-        , false);
+                , false);
     }
 
 }
